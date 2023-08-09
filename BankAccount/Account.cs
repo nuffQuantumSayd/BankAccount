@@ -11,6 +11,8 @@ namespace BankAccount
     /// </summary>
     public class Account
     {
+        private string? owner;
+
         /// <summary>
         /// Creates an account with a specific owner and a balance of 0
         /// </summary>
@@ -23,7 +25,64 @@ namespace BankAccount
         /// <summary>
         /// The account holders full name
         /// </summary>
-        public string? Owner { get; set; }
+        public string? Owner
+        {
+            get { return owner; }
+            set 
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException();
+                }
+
+                if (value.Trim() == string.Empty)
+                {
+                    throw new ArgumentException();
+                }
+
+                if (IsOwnerNameValid(value))
+                {
+                    owner = value;
+                }
+
+                else
+                {
+                    throw new ArgumentException();
+                }
+
+                owner = value; 
+            }
+        }
+
+        /// <summary>
+        /// Checks if owner name is less than or equal to 20 characters, A to Z
+        /// and whitespace characters are allowed
+        /// </summary>
+        /// <returns></returns>
+        private bool IsOwnerNameValid(string ownerName)
+        {
+            char[] validCharacters = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'
+                , 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x'
+                , 'y', 'z', ' '};
+
+            ownerName = ownerName.ToLower();
+
+            const int MaxLengthOwnerName = 20;
+
+            if (ownerName.Length > MaxLengthOwnerName)
+            {
+                return false;
+            }
+
+            foreach (char letter in ownerName)
+            {
+                if (!validCharacters.Contains(letter))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
 
         /// <summary>
         /// The amount of money currently in the account
